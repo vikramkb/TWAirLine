@@ -55,4 +55,16 @@ public class FlightSearchTests {
     public void destinationCannotBeEmpty() throws Exception {
         allFlights.byLocation(source, "");
     }
+
+    @Test
+    public void shouldFilterByAvailableSeats() throws Exception {
+        int numberOfSeats = 11;
+        List<Flight> matchingFlights = allFlights.byAvailableSeats(numberOfSeats).getFlightList();
+        Assert.assertEquals(0, matchingFlights.size());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void numberOfSeatsCannotBeNegative() throws Exception {
+        allFlights.byAvailableSeats(-10);
+    }
 }

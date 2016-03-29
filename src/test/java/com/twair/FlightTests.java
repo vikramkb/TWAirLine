@@ -22,4 +22,26 @@ public class FlightTests {
         Assert.assertEquals(source, flight.getSource());
         Assert.assertEquals(dest, flight.getDestination());
     }
+
+    @Test
+    public void shouldReturnTrueIfNumberOfSetasCanBeBooked() throws Exception {
+        Integer numberOfSeats = 10;
+        Flight flight = new Flight("F001", source, dest, plane);
+        Assert.assertTrue(flight.canBook(numberOfSeats));
+    }
+
+    @Test
+    public void shouldReturnTrueIfNumberOfSetasExactlySameAsAvailableSeats() throws Exception {
+        Integer numberOfSeats = 30;
+        Flight flight = new Flight("F001", source, dest, plane);
+        Assert.assertTrue(flight.canBook(numberOfSeats));
+    }
+
+    @Test
+    public void shouldReturnFalseIfNumberOfSetasCanNotBeBooked() throws Exception {
+        Integer numberOfSeats = 40;
+        Flight flight = new Flight("F001", source, dest, plane);
+        Assert.assertFalse(flight.canBook(numberOfSeats));
+    }
+
 }

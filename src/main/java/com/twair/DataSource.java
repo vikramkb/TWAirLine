@@ -18,6 +18,7 @@ public class DataSource {
     public List<Plane> fetchPlanes() {
         List<Plane> planes = new ArrayList<>();
         planes.add(new Plane("Boeing777-200LR(77L)", 195));
+        planes.add(new Plane("Airbus A319 V2", 144));
         planes.add(new Plane("Airbus A321", 152));
         return planes;
     }
@@ -28,7 +29,7 @@ public class DataSource {
         List<String> locations = fetchLocations();
         Flight flight1 = new Flight("F001", locations.get(0), locations.get(1), planes.get(0));
         Flight flight2 = new Flight("F002", locations.get(0), locations.get(1), planes.get(1));
-        Flight flight3 = new Flight("F003", locations.get(0), locations.get(1), planes.get(1));
+        Flight flight3 = new Flight("F003", locations.get(0), locations.get(1), planes.get(2));
 
         flightList.add(flight1);
         flightList.add(flight2);

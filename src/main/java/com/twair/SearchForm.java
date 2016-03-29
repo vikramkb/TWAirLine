@@ -4,6 +4,7 @@ public class SearchForm {
     private String from;
     private String to;
     private String number;
+    private Integer numberSeats;
 
     public String getFrom() {
         return from;
@@ -27,5 +28,17 @@ public class SearchForm {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public Integer getNumberSeats() {
+        return numberSeats;
+    }
+
+    public void setNumberSeats(Integer numberSeats) {
+        if(numberSeats == null) {
+            this.numberSeats = 1;
+        }else{
+            this.numberSeats = numberSeats;
+        }
     }
 }
