@@ -1,6 +1,8 @@
 package com.twair;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class FlightSearch {
@@ -36,6 +38,22 @@ public class FlightSearch {
         for (Flight flight : flightList) {
             if(flight.canBook(numberOfSeats)) {
                 matchingFlights.add(flight);
+            }
+        }
+        return new FlightSearch(matchingFlights);
+    }
+
+    public FlightSearch byDeparture(Calendar departureDate) {
+        if(departureDate == null) {
+            return this;
+        }
+        List<Flight> matchingFlights = new ArrayList<>();
+        for (Flight flight : flightList) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            if (departureDate != null) {
+                if (dateFormat.format(flight.getDepartureTime().getTime()).equals(dateFormat.format(departureDate.getTime()))) {
+                    matchingFlights.add(flight);
+                }
             }
         }
         return new FlightSearch(matchingFlights);
