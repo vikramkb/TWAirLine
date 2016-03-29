@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.*;
 
+/* the tests of this class, directly integrated with Flight class for better reliability*/
 public class FlightSearchTests {
     private String source;
     private String destination;
@@ -20,10 +21,19 @@ public class FlightSearchTests {
         departure = new GregorianCalendar(2016,3,10, 9, 10, 0);
         arrival = new GregorianCalendar(2016,3,10, 10, 10, 0);
 
-        Plane plane1 = new Plane("type1", 10);
-        Flight flight1 = new Flight("F001", source, destination, plane1, new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0));
-        Flight flight2 = new Flight("F002", "TestSource1", destination, plane1, new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0));
-        Flight flight3 = new Flight("F003", source, destination, plane1, new GregorianCalendar(2016,4,11, 9, 10, 0), new GregorianCalendar(2016,4,11, 11, 10, 0));
+        List<TravelClass> travelClasses = new ArrayList<>();
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 30));
+        Flight flight1 = new Flight("F001", source, destination, new Plane("type1", 30), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0), travelClasses);
+
+        travelClasses = new ArrayList<>();
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 5));
+        travelClasses.add(new TravelClass(ClassType.BUSINESS, 5));
+        Flight flight2 = new Flight("F002", "TestSource1", destination, new Plane("type2", 10), new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0), travelClasses);
+
+        travelClasses = new ArrayList<>();
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 5));
+        Flight flight3 = new Flight("F003", source, destination, new Plane("type2", 5), new GregorianCalendar(2016,4,11, 9, 10, 0), new GregorianCalendar(2016,4,11, 11, 10, 0), travelClasses);
+
         List<Flight> flightList = new ArrayList<>();
         flightList.add(flight1);
         flightList.add(flight2);
@@ -62,14 +72,31 @@ public class FlightSearchTests {
     }
 
     @Test
+    public void shouldReturnMatchingFlightsBasedOnDepartureDate() throws Exception {
+        Calendar departureDate = new GregorianCalendar(2016,3,10);
+        List<Flight> flights = allFlights.byDeparture(departureDate).getFlightList();
+        Assert.assertEquals(source, flights.get(0).getSource());
+        Assert.assertEquals(destination, flights.get(0).getDestination());
+        Assert.assertEquals(1, flights.size());
+    }
+
+    @Test
     public void shouldFilterByAvailableSeats() throws Exception {
         int numberOfSeats = 11;
-        List<Flight> matchingFlights = allFlights.byAvailableSeats(numberOfSeats).getFlightList();
+        List<Flight> matchingFlights = allFlights.byAvailableSeats(ClassType.FIRST, numberOfSeats).getFlightList();
         Assert.assertEquals(0, matchingFlights.size());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void numberOfSeatsCannotBeNegative() throws Exception {
-        allFlights.byAvailableSeats(-10);
+        allFlights.byAvailableSeats(ClassType.ECONOMY, -10);
+    }
+
+    @Test
+    public void shouldFilterBasedOnClassType() throws Exception {
+        List<Flight> matchingFlights = allFlights.byClassType(ClassType.BUSINESS).getFlightList();
+        Assert.assertEquals("TestSource1", matchingFlights.get(0).getSource());
+        Assert.assertEquals(destination, matchingFlights.get(0).getDestination());
+        Assert.assertEquals(1, matchingFlights.size());
     }
 }

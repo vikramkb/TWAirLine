@@ -10,6 +10,7 @@ public class SearchForm {
     private String number;
     private Integer numberSeats;
     private Calendar departureDate;
+    private ClassType classType;
 
     public String getFrom() {
         return from;
@@ -59,6 +60,26 @@ public class SearchForm {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             departureDate.setTime(sdf.parse(departureDateString));
             this.departureDate = departureDate;
+        }
+    }
+
+    public ClassType getClassType() {
+        return classType;
+    }
+
+    public void setClassType(String classTypeString) {
+        switch (classTypeString) {
+            case "Economy":
+                this.classType = ClassType.ECONOMY;
+                break;
+            case "Business":
+                this.classType = ClassType.BUSINESS;
+                break;
+            case "First":
+                this.classType = ClassType.FIRST;
+                break;
+            default:
+                this.classType = ClassType.ECONOMY;
         }
     }
 }

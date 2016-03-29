@@ -30,19 +30,6 @@ public class FlightSearch {
         return new FlightSearch(matchingFlights);
     }
 
-    public FlightSearch byAvailableSeats(int numberOfSeats) {
-        if(numberOfSeats < 0) {
-            throw new IllegalArgumentException("number of seats can not be negative");
-        }
-        List<Flight> matchingFlights = new ArrayList<>();
-        for (Flight flight : flightList) {
-            if(flight.canBook(numberOfSeats)) {
-                matchingFlights.add(flight);
-            }
-        }
-        return new FlightSearch(matchingFlights);
-    }
-
     public FlightSearch byDeparture(Calendar departureDate) {
         if(departureDate == null) {
             return this;
@@ -54,6 +41,29 @@ public class FlightSearch {
                 if (dateFormat.format(flight.getDepartureTime().getTime()).equals(dateFormat.format(departureDate.getTime()))) {
                     matchingFlights.add(flight);
                 }
+            }
+        }
+        return new FlightSearch(matchingFlights);
+    }
+
+    public FlightSearch byAvailableSeats(ClassType classType, int numberOfSeats) {
+        if(numberOfSeats < 0) {
+            throw new IllegalArgumentException("number of seats can not be negative");
+        }
+        List<Flight> matchingFlights = new ArrayList<>();
+        for (Flight flight : flightList) {
+            if(flight.canBook(classType, numberOfSeats)) {
+                matchingFlights.add(flight);
+            }
+        }
+        return new FlightSearch(matchingFlights);
+    }
+
+    public FlightSearch byClassType(ClassType classType) {
+        List<Flight> matchingFlights = new ArrayList<>();
+        for (Flight flight : flightList) {
+            if(flight.hasClass(classType)) {
+                matchingFlights.add(flight);
             }
         }
         return new FlightSearch(matchingFlights);
