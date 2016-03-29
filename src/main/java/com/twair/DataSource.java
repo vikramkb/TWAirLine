@@ -31,16 +31,20 @@ public class DataSource {
         travelClasses.add(new TravelClass(ClassType.ECONOMY, 195, 6000.0));
         travelClasses.add(new TravelClass(ClassType.BUSINESS, 35, 13000.0));
         travelClasses.add(new TravelClass(ClassType.FIRST, 8, 20000.0));
-        Flight flight1 = new Flight("F001", locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0), travelClasses);
+        RateFactory rateFactory = new RateFactory();
+        Flight flight1 = new Flight("F001", locations.get(0), locations.get(1), planes.get(0), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 9, 12, 0), travelClasses, rateFactory);
+        flight1.book(ClassType.ECONOMY, 190);
+        flight1.book(ClassType.BUSINESS, 20);
+
 
         travelClasses = new ArrayList<>();
         travelClasses.add(new TravelClass(ClassType.ECONOMY, 144, 4000.0));
-        Flight flight2 = new Flight("F002", locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0), travelClasses);
+        Flight flight2 = new Flight("F002", locations.get(0), locations.get(1), planes.get(1), new GregorianCalendar(2016,3,11, 9, 10, 0), new GregorianCalendar(2016,3,11, 9, 12, 0), travelClasses, rateFactory);
 
         travelClasses = new ArrayList<>();
         travelClasses.add(new TravelClass(ClassType.ECONOMY, 152, 5000.0));
         travelClasses.add(new TravelClass(ClassType.BUSINESS, 20, 10000.0));
-        Flight flight3 = new Flight("F003", locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0), travelClasses);
+        Flight flight3 = new Flight("F003", locations.get(0), locations.get(1), planes.get(2), new GregorianCalendar(2016,3,12, 9, 10, 0), new GregorianCalendar(2016,3,12, 9, 12, 0), travelClasses, rateFactory);
 
         flightList.add(flight1);
         flightList.add(flight2);

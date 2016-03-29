@@ -35,4 +35,7 @@ public class TravelClass {
         return basePrice;
     }
 
+    public Double getOccupencyPercentage() {
+        return ((double)occupiedSeats / totalSeats) * 100;
+    }
 }

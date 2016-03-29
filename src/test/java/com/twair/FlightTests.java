@@ -21,6 +21,7 @@ public class FlightTests {
     private List<TravelClass> travelClasses;
     private List<TravelClass> mockTravelClasses;
     private TravelClass mockEconomyClass;
+    private RateFactory rateFactory = mock(RateFactory.class);
 
     @Before
     public void setUp() throws Exception {
@@ -40,7 +41,7 @@ public class FlightTests {
 
     @Test
     public void shouldHaveSourceDestination() throws Exception {
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
         Assert.assertEquals(source, flight.getSource());
         Assert.assertEquals(dest, flight.getDestination());
     }
@@ -50,7 +51,7 @@ public class FlightTests {
         Integer numberOfSeats = 10;
         when(mockEconomyClass.canBook(numberOfSeats)).thenReturn(true);
         when(mockEconomyClass.getClassType()).thenReturn(ClassType.ECONOMY);
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, mockTravelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, mockTravelClasses, rateFactory);
         Assert.assertTrue(flight.canBook(ClassType.ECONOMY, numberOfSeats));
     }
 
@@ -59,7 +60,7 @@ public class FlightTests {
         Integer numberOfSeats = 30;
         when(mockEconomyClass.canBook(numberOfSeats)).thenReturn(true);
         when(mockEconomyClass.getClassType()).thenReturn(ClassType.ECONOMY);
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, mockTravelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, mockTravelClasses, rateFactory);
         Assert.assertTrue(flight.canBook(ClassType.ECONOMY, numberOfSeats));
     }
 
@@ -68,14 +69,14 @@ public class FlightTests {
         Integer numberOfSeats = 40;
         when(mockEconomyClass.canBook(numberOfSeats)).thenReturn(false);
         when(mockEconomyClass.getClassType()).thenReturn(ClassType.ECONOMY);
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, mockTravelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, mockTravelClasses, rateFactory);
         Assert.assertFalse(flight.canBook(ClassType.ECONOMY, numberOfSeats));
     }
 
     @Test
     public void shouldReturnFalseIfNoTravelClassForTheFlight() throws Exception {
         Integer numberOfSeats = 5;
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
         Assert.assertFalse(flight.canBook(ClassType.BUSINESS, numberOfSeats));
     }
 
@@ -83,7 +84,7 @@ public class FlightTests {
     public void shouldHaveArrivalAndDeparture() throws Exception {
         Calendar departure = new GregorianCalendar(2016,4,10, 9, 10, 0);
         Calendar arrival = new GregorianCalendar(2016,4,10, 11, 10, 0);
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
         Assert.assertEquals(departure, flight.getDepartureTime());
         Assert.assertEquals(arrival, flight.getArrivalTime());
     }
@@ -92,26 +93,37 @@ public class FlightTests {
     public void DepartureDateCannotBeGreaterOrEqualToArrivalTime() throws Exception {
         Calendar departure = new GregorianCalendar(2016,5,10, 9, 10, 0);
         Calendar arrival = new GregorianCalendar(2016,4,10, 11, 10, 0);
-        new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
     }
 
     @Test
     public void shouldReturnTrueIfThereAreSeatsOfThatClass() throws Exception {
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
         Assert.assertTrue(flight.hasClass(ClassType.ECONOMY));
     }
 
     @Test
     public void shouldReturnFalseIfThereAreNoSeatsOfThatClass() throws Exception {
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
         Assert.assertFalse(flight.hasClass(ClassType.BUSINESS));
     }
 
     @Test
     public void shouldHaveBasePriceForSpecifiedClass() throws Exception {
-        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
+        FastFillingRate fastFillingRate = mock(FastFillingRate.class);
+        when(rateFactory.getFastFillingRate(travelClasses.get(0))).thenReturn(fastFillingRate);
+        when(fastFillingRate.extraBasePriceRatio()).thenReturn(0.0);
         Assert.assertEquals(3000.0, flight.getBasePrice(ClassType.ECONOMY).intValue(), 0.01);
     }
 
+    @Test
+    public void shouldGetPriceAlongWithFastFillingCost() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses, rateFactory);
+        FastFillingRate fastFillingRate = mock(FastFillingRate.class);
+        when(rateFactory.getFastFillingRate(travelClasses.get(0))).thenReturn(fastFillingRate);
+        when(fastFillingRate.extraBasePriceRatio()).thenReturn(0.3);
+        Assert.assertEquals(3900.0, flight.getBasePrice(ClassType.ECONOMY).intValue(), 0.01);
+    }
 
 }

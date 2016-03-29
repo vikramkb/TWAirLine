@@ -9,17 +9,19 @@ public class Flight {
     private String destination;
     private Plane plane;
     private String number;
+    private RateFactory rateFactory;
     private final Integer availableSeats;
     private Calendar departureTime;
     private Calendar arrivalTime;
     private Map<ClassType, TravelClass> travelClassMap = new HashMap<>();
 
 
-    public Flight(String number, String source, String destination, Plane plane, Calendar departure, Calendar arrival, List<TravelClass> travelClasses) throws Exception {
+    public Flight(String number, String source, String destination, Plane plane, Calendar departure, Calendar arrival, List<TravelClass> travelClasses, RateFactory rateFactory) throws Exception {
         this.source = source;
         this.destination = destination;
         this.plane = plane;
         this.number = number;
+        this.rateFactory = rateFactory;
         this.availableSeats = plane.getNumberOfSeats();
         setScheduleTime(departure, arrival);
         for(TravelClass travelClass : travelClasses) {
@@ -34,9 +36,16 @@ public class Flight {
         return false;
     }
 
+    /*added temporarily for doing application testing*/
+    public void book(ClassType classType, Integer numberOfSeats) throws Exception {
+        if(travelClassMap.containsKey(classType)) {
+            travelClassMap.get(classType).book(numberOfSeats);
+        }
+    }
+
     public Double getBasePrice(ClassType classType) {
         if( travelClassMap.containsKey(classType) ) {
-            return travelClassMap.get(classType).getBasePrice();
+            return travelClassMap.get(classType).getBasePrice() * (1 + rateFactory.getFastFillingRate(travelClassMap.get(classType)).extraBasePriceRatio());
         }
         return 0.0;
     }

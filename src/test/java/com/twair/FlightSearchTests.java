@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.*;
 
+import static org.mockito.Mockito.mock;
+
 /* the tests of this class, directly integrated with Flight class for better reliability*/
 public class FlightSearchTests {
     private String source;
@@ -14,6 +16,8 @@ public class FlightSearchTests {
     private Calendar arrival;
     private FlightSearch allFlights;
     private Double basePrice = 3000.0;
+    private RateFactory rateFactory = mock(RateFactory.class);
+
 
     @Before
     public void setUp() throws Exception {
@@ -24,16 +28,16 @@ public class FlightSearchTests {
 
         List<TravelClass> travelClasses = new ArrayList<>();
         travelClasses.add(new TravelClass(ClassType.ECONOMY, 30, basePrice));
-        Flight flight1 = new Flight("F001", source, destination, new Plane("type1", 30), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0), travelClasses);
+        Flight flight1 = new Flight("F001", source, destination, new Plane("type1", 30), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0), travelClasses, rateFactory);
 
         travelClasses = new ArrayList<>();
         travelClasses.add(new TravelClass(ClassType.ECONOMY, 5, basePrice));
         travelClasses.add(new TravelClass(ClassType.BUSINESS, 5, basePrice));
-        Flight flight2 = new Flight("F002", "TestSource1", destination, new Plane("type2", 10), new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0), travelClasses);
+        Flight flight2 = new Flight("F002", "TestSource1", destination, new Plane("type2", 10), new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0), travelClasses, rateFactory);
 
         travelClasses = new ArrayList<>();
         travelClasses.add(new TravelClass(ClassType.ECONOMY, 5, basePrice));
-        Flight flight3 = new Flight("F003", source, destination, new Plane("type2", 5), new GregorianCalendar(2016,4,11, 9, 10, 0), new GregorianCalendar(2016,4,11, 11, 10, 0), travelClasses);
+        Flight flight3 = new Flight("F003", source, destination, new Plane("type2", 5), new GregorianCalendar(2016,4,11, 9, 10, 0), new GregorianCalendar(2016,4,11, 11, 10, 0), travelClasses, rateFactory);
 
         List<Flight> flightList = new ArrayList<>();
         flightList.add(flight1);

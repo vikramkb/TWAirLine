@@ -37,4 +37,10 @@ public class TravelClassTests {
         Integer numberOfSetas = 110;
         Assert.assertFalse(economyClass.canBook(numberOfSetas));
     }
+
+    @Test
+    public void shouldReturnOccupencyPercentage() throws Exception {
+        economyClass.book(80);
+        Assert.assertEquals(80.0, economyClass.getOccupencyPercentage(), 0.01);
+    }
 }
