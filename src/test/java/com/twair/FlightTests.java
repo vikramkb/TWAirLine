@@ -30,7 +30,7 @@ public class FlightTests {
         departure = new GregorianCalendar(2016,3,10, 9, 10, 0);
         arrival = new GregorianCalendar(2016,3,10, 10, 10, 0);
         travelClasses = new ArrayList();
-        travelClasses.add(new TravelClass(ClassType.ECONOMY, 30));
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 30, 3000.0));
 
         mockEconomyClass = mock(TravelClass.class);
         mockTravelClasses = new ArrayList();
@@ -106,5 +106,12 @@ public class FlightTests {
         Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
         Assert.assertFalse(flight.hasClass(ClassType.BUSINESS));
     }
+
+    @Test
+    public void shouldHaveBasePriceForSpecifiedClass() throws Exception {
+        Flight flight = new Flight("F001", source, dest, plane, departure, arrival, travelClasses);
+        Assert.assertEquals(3000.0, flight.getBasePrice(ClassType.ECONOMY).intValue(), 0.01);
+    }
+
 
 }

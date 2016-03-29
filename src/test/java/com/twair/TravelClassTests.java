@@ -16,7 +16,7 @@ public class TravelClassTests {
     public void setUp() throws Exception {
         totalSeats = 100;
         basePrice = 5000.0;
-        economyClass = new TravelClass(ClassType.ECONOMY, totalSeats);
+        economyClass = new TravelClass(ClassType.ECONOMY, totalSeats, basePrice);
     }
 
     @Test(expected = Exception.class)

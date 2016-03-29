@@ -28,6 +28,7 @@ public class TwAirApplication {
 			matchingFlights = matchingFlights.byClassType(searchForm.getClassType());
 			matchingFlights = matchingFlights.byAvailableSeats(searchForm.getClassType(), searchForm.getNumberSeats());
 			model.addAttribute("flights", matchingFlights.getFlightList());
+			model.addAttribute("flightPriceMap", new Price().calculate(matchingFlights.getFlightList(), searchForm.getClassType(), searchForm.getNumberSeats()));
 		}catch (Exception e) {
 			e.printStackTrace();
 			model.addAttribute("flights", new ArrayList());

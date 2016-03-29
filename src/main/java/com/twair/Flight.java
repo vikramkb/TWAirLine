@@ -34,6 +34,14 @@ public class Flight {
         return false;
     }
 
+    public Double getBasePrice(ClassType classType) {
+        if( travelClassMap.containsKey(classType) ) {
+            return travelClassMap.get(classType).getBasePrice();
+        }
+        return 0.0;
+    }
+
+
     public String getSource() {
         return source;
     }

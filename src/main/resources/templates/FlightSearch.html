@@ -33,12 +33,14 @@
         <th>To</th>
         <th>Departure Time</th>
         <th>Arrival Time</th>
+        <th>Total Cost</th>
         <tr th:each="flight:${flights}">
            <td th:text="${flight.number}"></td>
            <td th:text="${flight.source}"></td>
            <td th:text="${flight.destination}"></td>
            <td th:text="${flight.departureTime.getTime()}"></td>
            <td th:text="${flight.arrivalTime.getTime()}"></td>
+           <td th:text="${flightPriceMap.get(flight.number)}"></td>
         </tr>
     </table>
 </div>

@@ -4,11 +4,13 @@ public class TravelClass {
     private ClassType classType;
     private Integer totalSeats;
     private Integer occupiedSeats;
+    private Double basePrice;
 
-    public TravelClass(ClassType classType, Integer totalSeats) {
+    public TravelClass(ClassType classType, Integer totalSeats, Double basePrice) {
         this.classType = classType;
         this.totalSeats = totalSeats;
         this.occupiedSeats = 0;
+        this.basePrice = basePrice;
     }
 
     public void book(int numberOfSeats) throws Exception {
@@ -28,4 +30,9 @@ public class TravelClass {
     public ClassType getClassType() {
         return classType;
     }
+
+    public Double getBasePrice() {
+        return basePrice;
+    }
+
 }

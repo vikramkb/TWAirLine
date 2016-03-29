@@ -13,6 +13,7 @@ public class FlightSearchTests {
     private Calendar departure;
     private Calendar arrival;
     private FlightSearch allFlights;
+    private Double basePrice = 3000.0;
 
     @Before
     public void setUp() throws Exception {
@@ -22,16 +23,16 @@ public class FlightSearchTests {
         arrival = new GregorianCalendar(2016,3,10, 10, 10, 0);
 
         List<TravelClass> travelClasses = new ArrayList<>();
-        travelClasses.add(new TravelClass(ClassType.ECONOMY, 30));
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 30, basePrice));
         Flight flight1 = new Flight("F001", source, destination, new Plane("type1", 30), new GregorianCalendar(2016,3,10, 9, 10, 0), new GregorianCalendar(2016,3,10, 11, 10, 0), travelClasses);
 
         travelClasses = new ArrayList<>();
-        travelClasses.add(new TravelClass(ClassType.ECONOMY, 5));
-        travelClasses.add(new TravelClass(ClassType.BUSINESS, 5));
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 5, basePrice));
+        travelClasses.add(new TravelClass(ClassType.BUSINESS, 5, basePrice));
         Flight flight2 = new Flight("F002", "TestSource1", destination, new Plane("type2", 10), new GregorianCalendar(2016,4,10, 9, 10, 0), new GregorianCalendar(2016,4,10, 11, 10, 0), travelClasses);
 
         travelClasses = new ArrayList<>();
-        travelClasses.add(new TravelClass(ClassType.ECONOMY, 5));
+        travelClasses.add(new TravelClass(ClassType.ECONOMY, 5, basePrice));
         Flight flight3 = new Flight("F003", source, destination, new Plane("type2", 5), new GregorianCalendar(2016,4,11, 9, 10, 0), new GregorianCalendar(2016,4,11, 11, 10, 0), travelClasses);
 
         List<Flight> flightList = new ArrayList<>();
